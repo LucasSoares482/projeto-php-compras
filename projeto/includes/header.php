@@ -13,7 +13,7 @@
             <a href="<?= SITE_URL ?>" class="logo"><?= SITE_NAME ?></a>
             <ul class="nav-links">
                 <li><a href="<?= SITE_URL ?>">Home</a></li>
-                <li><a href="<?= SITE_URL ?>/produtos.php">Produtos</a></li>
+                <li><a href="<?= SITE_URL ?>/index.php?page=produtos">Produtos</a></li>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li><a href="<?= SITE_URL ?>/minha-conta.php">Minha Conta</a></li>
                     <li><a href="<?= SITE_URL ?>/logout.php">Sair</a></li>

@@ -8,7 +8,7 @@ class Database {
     private function __construct() {
         try {
             $this->conn = new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
+                "mysql:host=localhost;port=3307;dbname=" . DB_NAME,
                 DB_USER,
                 DB_PASS,
                 [PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"]
