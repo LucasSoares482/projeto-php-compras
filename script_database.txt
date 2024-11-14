@@ -1,0 +1,80 @@
+-- Create database
+CREATE DATABASE ecommerce CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE ecommerce;
+
+-- Create tables
+CREATE TABLE clientes (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    telefone VARCHAR(15),
+    status ENUM('ativo', 'inativo', 'bloqueado') DEFAULT 'ativo',
+    data_cadastro DATETIME NOT NULL,
+    ultimo_login DATETIME,
+    INDEX idx_email (email)
+);
+
+CREATE TABLE produtos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL,
+    estoque INT NOT NULL DEFAULT 0,
+    categoria VARCHAR(50),
+    imagem VARCHAR(255),
+    data_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_categoria (categoria)
+);
+
+CREATE TABLE compras (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id INT NOT NULL,
+    valor_produtos DECIMAL(10,2) NOT NULL,
+    valor_frete DECIMAL(10,2) NOT NULL,
+    valor_total DECIMAL(10,2) NOT NULL,
+    cep VARCHAR(9) NOT NULL,
+    endereco VARCHAR(255) NOT NULL,
+    numero VARCHAR(20) NOT NULL,
+    complemento VARCHAR(100),
+    bairro VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    estado CHAR(2) NOT NULL,
+    status ENUM('pendente', 'aprovado', 'cancelado') NOT NULL,
+    data_compra DATETIME NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    INDEX idx_cliente (cliente_id),
+    INDEX idx_status (status)
+);
+
+CREATE TABLE compras_itens (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    compra_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    preco_unitario DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (compra_id) REFERENCES compras(id),
+    FOREIGN KEY (produto_id) REFERENCES produtos(id),
+    INDEX idx_compra (compra_id)
+);
+
+-- Create admin table
+CREATE TABLE admin (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    status ENUM('ativo', 'inativo') DEFAULT 'ativo',
+    ultimo_acesso DATETIME
+);
+
+-- Insert admin user
+INSERT INTO admin (nome, email, senha, status) VALUES 
+('Administrador', 'admin@admin.com', '$2y$10$HfzIhGCCaxqyaIdGgjARSuOKAcm1Uy82YfLuNaajn6JrjLWy9Sj/W', 'ativo');
+-- Senha: admin123
+
+-- Insert sample products
+INSERT INTO produtos (nome, descricao, preco, estoque, categoria, data_cadastro) VALUES
+('Produto 1', 'Descrição do produto 1', 99.90, 50, 'Categoria 1', NOW()),
+('Produto 2', 'Descrição do produto 2', 149.90, 30, 'Categoria 2', NOW()),
+('Produto 3', 'Descrição do produto 3', 199.90, 20, 'Categoria 1', NOW());
