@@ -1,7 +1,7 @@
 # logins de admin
  admin@admin.com
- admin123
+ senha: admin123
 
 teste@teste.com
-123456
+senha: 123456
   
